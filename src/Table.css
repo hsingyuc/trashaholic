@@ -1,0 +1,16 @@
+.table {
+  color: white;
+  margin-bottom: 30px;
+}
+
+.table, 
+.table tr, 
+.table td{
+  border: 1px solid gray;
+  border-collapse: collapse;
+  padding: 10px;
+}
+
+.table thead {
+  text-align: center;
+}

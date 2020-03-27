@@ -1,0 +1,15 @@
+.react-icon {
+    margin: 18px;
+    text-align: center;
+}
+
+.react-icon svg {
+    margin: 5px;
+    width: 40px;
+    height: 40px;
+    color: red;
+}
+
+.react-icon p {
+    color: yellow;
+}
