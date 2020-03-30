@@ -6,7 +6,6 @@ class Map extends React.Component {
         super( props );
         this.initMap = this.initMap.bind( this );
         this.mapRef = React.createRef();
-
         this.state = {
             markers: [],
         };
@@ -75,10 +74,45 @@ class Map extends React.Component {
         
         this.map = new this.google.maps.Map(
             this.mapRef.current,
-            { zoom: 4, center: latLongs[0] }
+            { zoom: 16, center: latLongs[0] }
         );
 
-        this.renderMarkers();   
+        this.renderMarkers(); 
+        
+        /* current location */
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition( position => {
+                var pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                new this.google.maps.Marker(
+                    { 
+                        position: pos,
+                        map: this.map,
+                        icon: {                             
+                            url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                        }
+                    }
+                )
+                this.map.setCenter(pos);
+            }, () => {
+                this.handleLocationError( true, this.map.getCenter() );
+            } );
+        } else {
+          // Browser doesn't support Geolocation
+          this.handleLocationError( false, this.map.getCenter() );
+        };
+    }
+
+    handleLocationError( browserHasGeolocation, pos ) {
+        const infoWindow = new this.google.maps.InfoWindow;
+        infoWindow.setPosition(pos);
+        infoWindow.setContent( browserHasGeolocation 
+            ? 'Error: The Geolocation service failed.' 
+            : 'Error: Your browser doesn\'t support geolocation.'
+        );
+        infoWindow.open(this.map);
     }
 
     deleteMarkers() {

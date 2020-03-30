@@ -1,11 +1,11 @@
 import React from 'react';
-import './RecycleItem.css';
+import './WasteTypes.css';
 import { GiFishbone } from 'react-icons/gi';
 import { FaRegTrashAlt, FaWineBottle } from 'react-icons/fa';
 import { IoMdPaper } from 'react-icons/io';
 
-class RecycleItem extends React.Component {
-    renderRecycleItem() {
+class WasteTypes extends React.Component {
+    render() {
         const d = new Date();
         switch( d.getDay() ) {
             case 1:
@@ -35,10 +35,6 @@ class RecycleItem extends React.Component {
                 return <p>Not today!!!</p>;
         }
     }
-
-    render() {
-        return this.renderRecycleItem();
-    }
 }
 
-export default RecycleItem;
+export default WasteTypes;

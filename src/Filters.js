@@ -1,7 +1,7 @@
 import React from 'react';
-import './InputBox.css';
+import './Filters.css';
 
-class InputBox extends React.Component {
+class Filters extends React.Component {
     matchStartTime( event ) {
         const startTime = event.target.value;
         this.props.setStartTime( startTime );
@@ -14,7 +14,7 @@ class InputBox extends React.Component {
 
     render() {
         return(
-            <div className='input-time'>
+            <div className='filters'>
                 <input type="text" onChange={ event => this.matchStartTime( event ) } value={ this.props.startTime } placeholder='1700' />
                 <input type="text" onChange={ event => this.matchEndTime( event ) } value={ this.props.endTime } placeholder='1800'/>
             </div>
@@ -22,4 +22,4 @@ class InputBox extends React.Component {
     }
 }
 
-export default InputBox;
+export default Filters;

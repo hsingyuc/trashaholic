@@ -2,8 +2,8 @@ import React from 'react';
 import './App.css';
 import Table from './Table.js';
 import Map from './Map.js';
-import RecycleItem from './RecycleItem.js';
-import InputBox from './InputBox.js';
+import WasteTypes from './WasteTypes.js';
+import Filters from './Filters.js';
 
 class App extends React.Component {
   constructor( props ) {
@@ -12,6 +12,7 @@ class App extends React.Component {
         collectionPlaces: [],
         startTime: '',
         endTime: '',
+        isTableView: true,
     };
   }
 
@@ -44,7 +45,7 @@ class App extends React.Component {
   }
  
   render() {
-    const { collectionPlaces } = this.state;
+    const { collectionPlaces, isTableView } = this.state;
     if( ! collectionPlaces.length ) {
         return <div>Loading...</div>
     }
@@ -52,16 +53,21 @@ class App extends React.Component {
     const filteredPlaces = this.getFilteredPlaces();
     return (
       <div>
-          <InputBox
+          <Filters
               startTime={ this.state.startTime }
               endTime={ this.state.endTime }
               setStartTime={ time => this.setState( { startTime: time } ) }
               setEndTime={ time => this.setState( { endTime: time } ) }
           />
-          <RecycleItem />
+          <WasteTypes />
+          <button onClick={ () => this.setState( { isTableView: ! isTableView } ) }>
+            { isTableView ? 'Map' : 'Table' }
+          </button>
           <div className='info-container'>
-              <Table collectionPlaces={ filteredPlaces } />
-              <Map collectionPlaces={ filteredPlaces } />
+              { isTableView
+                ? <Table collectionPlaces={ filteredPlaces } />
+                : <Map collectionPlaces={ filteredPlaces } />
+              }
           </div>
       </div>
     );
