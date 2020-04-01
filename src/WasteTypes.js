@@ -32,7 +32,7 @@ class WasteTypes extends React.Component {
                 );
                 break;
             default:
-                return <p>Not today!!!</p>;
+                return <p className='react-icon'>Not today!!!</p>;
         }
     }
 }

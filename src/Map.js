@@ -1,5 +1,6 @@
 import React from 'react';
 import './Map.css';
+import { getGoogleMapsPromise } from './utils';
 
 class Map extends React.Component {
     constructor( props ) {
@@ -7,12 +8,12 @@ class Map extends React.Component {
         this.initMap = this.initMap.bind( this );
         this.mapRef = React.createRef();
         this.state = {
-            markers: [],
+            infoWindows: [],
         };
     }
 
     componentDidMount() {
-        this.getGoogleMapsPromise().then( () => this.initMap() );
+        getGoogleMapsPromise().then( () => this.initMap() );
     }
 
     componentDidUpdate( prevProps ) {
@@ -20,8 +21,10 @@ class Map extends React.Component {
         const oldLineIds = prevProps.collectionPlaces.map( place => place.lineid );
 
         if ( ! this.arraysEqual( newLineIds, oldLineIds ) ) {
-            this.renderMarkers();
+            this.renderInfoWindows();
         }
+
+        this.fitMap();
     }
 
     arraysEqual(a, b) {
@@ -35,74 +38,31 @@ class Map extends React.Component {
         return true;
     }
 
-    getGoogleMapsPromise() {
-        // If we haven't already defined the promise, define it
-        if ( ! window.googleMapsPromise ) {
-            window.googleMapsPromise = new Promise( ( resolve ) => {
-                // Add a global handler for when the API finishes loading
-                window.resolveGoogleMapsPromise = () => {
-                    // Resolve the promise, we're done with this promise.
-                    resolve();
-                    // Delete the used resolver function.
-                    delete window.resolveGoogleMapsPromise;
-                };
-        
-                // Load the Google Maps API
-                const script = document.createElement( "script" );
-                const API = 'AIzaSyDfgM-gH4reFsyeZYzoecfGvoXg2aXro9s';
-                script.src = `https://maps.googleapis.com/maps/api/js?key=${API}&callback=resolveGoogleMapsPromise`;
-                script.async = true;
-                document.body.appendChild( script );
-            } );
-        }
-
-        return window.googleMapsPromise;
-    }
-
-    getLatLongs() {
-        return this.props.collectionPlaces.map( place => {
-            // string to floating number
-            const lng = parseFloat( place.longitude );
-            const lat = parseFloat( place.latitude );
-            return { lat, lng };
-        });
-    }
-
     initMap() {
         this.google = window.google;
-        const latLongs = this.getLatLongs();
-        
-        this.map = new this.google.maps.Map(
-            this.mapRef.current,
-            { zoom: 16, center: latLongs[0] }
-        );
 
-        this.renderMarkers(); 
-        
-        /* current location */
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition( position => {
-                var pos = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                };
-                new this.google.maps.Marker(
-                    { 
-                        position: pos,
-                        map: this.map,
-                        icon: {                             
-                            url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-                        }
-                    }
-                )
-                this.map.setCenter(pos);
-            }, () => {
-                this.handleLocationError( true, this.map.getCenter() );
-            } );
+        this.map = new this.google.maps.Map(
+            this.mapRef.current //current is the DOM element for the reference.
+            // { zoom: 0 }
+        );
+            
+        this.renderInfoWindows(); 
+
+        if ( this.props.currentPosition ) {
+            const marker = new this.google.maps.Marker(
+                { 
+                    position: this.props.currentPosition,
+                    map: this.map,
+                    icon: {                             
+                        url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                    },
+                }
+            )
+            //this.map.setCenter(this.props.currentPosition);
+            // this.map.setCenter( bounds.getCenter(), this.map.getBoundsZoomLevel(bounds) );
         } else {
-          // Browser doesn't support Geolocation
-          this.handleLocationError( false, this.map.getCenter() );
-        };
+            this.handleLocationError( false, this.map.getCenter() );
+        }
     }
 
     handleLocationError( browserHasGeolocation, pos ) {
@@ -115,27 +75,49 @@ class Map extends React.Component {
         infoWindow.open(this.map);
     }
 
-    deleteMarkers() {
-        this.state.markers.forEach( marker => marker.setMap(null) );
+    deleteInfoWindows() {
+        this.state.infoWindows.forEach( infoWindow => infoWindow.setMap(null) );
+    }
+
+    fitMap() {
+        const bounds = new this.google.maps.LatLngBounds();
+        const { infoWindows } = this.state;
+
+        if ( this.props.currentPosition ) {
+            bounds.extend( this.props.currentPosition );
+        }
+
+        for(let i = 0; i < infoWindows.length && i < 5; i++ ) {
+            bounds.extend( infoWindows[i].getPosition() );
+        }
+
+        this.map.fitBounds(bounds);
+        this.map.panToBounds(bounds); 
     }
     
-    renderMarkers() {
+    renderInfoWindows() {
         if ( ! this.google ) {
             return;
         }
 
-        // Delete old markers before rendering new ones.
-        this.deleteMarkers();
+        // Delete old infoWindows before rendering new ones.
+        this.deleteInfoWindows();
 
-        const latLongs = this.getLatLongs();
+        // The infoWindows, positioned at EACH latLongs
+        const infoWindows = this.props.collectionPlaces.map( place => {
+            const infoWindow = new this.google.maps.InfoWindow({
+                position: { 
+                    lat: parseFloat( place.latitude ),   //string to floating number
+                    lng: parseFloat( place.longitude ) 
+                },  
+                content: place.startTime
+            });
+            infoWindow.open(this.map);
 
-        // The marker, positioned at EACH latLongs
-        const markers = latLongs.map( ( latLong ) => {
-            const marker = new this.google.maps.Marker( { position: latLong, map: this.map } )
-            return marker;
+            return infoWindow;
         } );
 
-        this.setState( { markers } );
+        this.setState( { infoWindows } );
     }
 
     render() {
