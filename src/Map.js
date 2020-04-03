@@ -82,13 +82,16 @@ class Map extends React.Component {
     fitMap() {
         const bounds = new this.google.maps.LatLngBounds();
         const { infoWindows } = this.state;
+        const { currentPosition } = this.props;
 
-        if ( this.props.currentPosition ) {
-            bounds.extend( this.props.currentPosition );
+        if ( currentPosition ) {
+            const currentPositiongLatLng = new this.google.maps.LatLng(currentPosition.lat, currentPosition.lng);
+            bounds.extend( currentPositiongLatLng );
         }
 
         for(let i = 0; i < infoWindows.length && i < 5; i++ ) {
-            bounds.extend( infoWindows[i].getPosition() );
+            console.log(infoWindows[i].getPosition() );
+            bounds.extend( infoWindows[i].getPosition());  
         }
 
         this.map.fitBounds(bounds);
