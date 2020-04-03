@@ -4,12 +4,11 @@ import './Table.css';
 class Table extends React.Component {
     renderTable() {
         return this.props.collectionPlaces.map( ( data, index ) => {
-            const { car, distance, time, location } = data;
+            const { distance, startTime, endTime, address } = data;
 
             return <tr key={ index }>
-                    <td>{ car }</td>
-                    <td>{ time }</td>
-                    <td>{ location }</td>
+                    <td>{ startTime }-{ endTime }</td>
+                    <td>{ address }</td>
                     <td>{ this.getFormattedDistance(distance) }</td>
                 </tr>
         });
@@ -33,7 +32,6 @@ class Table extends React.Component {
                 <table className='table'>
                     <thead>
                         <tr>
-                            <td>Car</td>
                             <td>Time</td>
                             <td>Location</td>
                             <td>Distance</td>

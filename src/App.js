@@ -26,12 +26,12 @@ class App extends React.Component {
   }
 
   componentDidUpdate( prevProps, prevState ) {
-    const { google, currentPosition } = this.state;
-    const { google: prevGoogle, currentPosition: prevCurrentPosition } = prevState;
+    const { google, collectionPlaces, currentPosition } = this.state;
+    const { google: prevGoogle, collectionPlaces: prevCollectionPlaces, currentPosition: prevCurrentPosition } = prevState;
 
     if (
-      ( google && currentPosition ) &&
-      ( ! prevGoogle || ! prevCurrentPosition )
+      ( google && currentPosition && collectionPlaces.length ) &&
+      ( ! prevGoogle || ! prevCurrentPosition || ! prevCollectionPlaces.length  )
     ) {
       this.addDistanceInfo();
     }
@@ -40,7 +40,7 @@ class App extends React.Component {
   addDistanceInfo() {
     const updatedPlaces = this.state.collectionPlaces.map( place => {
         var distance = this.state.google.maps.geometry.spherical.computeDistanceBetween(
-          new this.state.google.maps.LatLng( parseFloat( place.latitude ), parseFloat( place.longitude ) ),
+          new this.state.google.maps.LatLng( place.lat, place.lng ),
           new this.state.google.maps.LatLng( this.state.currentPosition.lat, this.state.currentPosition.lng ),
         );
         place.distance = distance;
@@ -53,6 +53,8 @@ class App extends React.Component {
   }
 
   setCurrentPosition() {
+    // console.log('setCurrentPosition');
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition( position => {
           const currentPosition = {
@@ -65,13 +67,12 @@ class App extends React.Component {
   }
 
   getCollectionData() {
-    fetch( 'http://localhost:3000/collection_times2.json' )
+    fetch( 'http://localhost:3000/formatted_places.json' )
       .then( ( response ) => response.json() )
       .then( ( collectionPlaces ) => { 
         return collectionPlaces.map( ( place ) => {
-            const [ collectStartTime, collectEndTime ] = place.time.split( '-' );
-            place.startTime = collectStartTime;
-            place.endTime = collectEndTime;
+            place.lat = parseFloat( place.lat );
+            place.lng = parseFloat( place.lng );
             return place;
         } );
        } )
@@ -122,10 +123,10 @@ class App extends React.Component {
           <div className='info-container'>
               { isTableView
                 ? <Table 
-                    collectionPlaces={ filteredPlaces.slice(0,11) }
+                    collectionPlaces={ filteredPlaces.slice(0,10) }
                   />
                 : <Map
-                    collectionPlaces={ filteredPlaces }
+                    collectionPlaces={ filteredPlaces.slice(0,10) }
                     currentPosition={ currentPosition }
                   />
               }

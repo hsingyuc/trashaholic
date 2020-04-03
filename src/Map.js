@@ -30,7 +30,7 @@ class Map extends React.Component {
     arraysEqual(a, b) {
         if (a === b) return true;
         if (a == null || b == null) return false;
-        if (a.length != b.length) return false;
+        if (a.length !== b.length) return false;
       
         for (var i = 0; i < a.length; ++i) {
           if (a[i] !== b[i]) return false;
@@ -59,7 +59,6 @@ class Map extends React.Component {
                 }
             )
             //this.map.setCenter(this.props.currentPosition);
-            // this.map.setCenter( bounds.getCenter(), this.map.getBoundsZoomLevel(bounds) );
         } else {
             this.handleLocationError( false, this.map.getCenter() );
         }
@@ -80,6 +79,7 @@ class Map extends React.Component {
     }
 
     fitMap() {
+        // console.log('fitmap');
         const bounds = new this.google.maps.LatLngBounds();
         const { infoWindows } = this.state;
         const { currentPosition } = this.props;
@@ -90,10 +90,9 @@ class Map extends React.Component {
         }
 
         for(let i = 0; i < infoWindows.length && i < 5; i++ ) {
-            console.log(infoWindows[i].getPosition() );
             bounds.extend( infoWindows[i].getPosition());  
         }
-
+        
         this.map.fitBounds(bounds);
         this.map.panToBounds(bounds); 
     }
@@ -108,11 +107,9 @@ class Map extends React.Component {
 
         // The infoWindows, positioned at EACH latLongs
         const infoWindows = this.props.collectionPlaces.map( place => {
+            const { lat, lng } = place;
             const infoWindow = new this.google.maps.InfoWindow({
-                position: { 
-                    lat: parseFloat( place.latitude ),   //string to floating number
-                    lng: parseFloat( place.longitude ) 
-                },  
+                position: { lat, lng },  
                 content: place.startTime
             });
             infoWindow.open(this.map);
