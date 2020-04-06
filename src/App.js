@@ -73,6 +73,12 @@ class App extends React.Component {
         return collectionPlaces.map( ( place ) => {
             place.lat = parseFloat( place.lat );
             place.lng = parseFloat( place.lng );
+            place.getStartTimeInt = function() {
+              return parseInt( this.startTime.replace(':','') );
+            };
+            place.getEndTimeInt = function() {
+              return parseInt( this.endTime.replace(':','') );
+            };
             return place;
         } );
        } )
@@ -80,11 +86,19 @@ class App extends React.Component {
   }
 
   getFilteredPlaces() {
+    
+
     let filteredPlaces = this.state.startTime.length
-        ? this.state.collectionPlaces.filter( place => place.time.replace(':','') >= this.state.startTime.replace(':','') )
+        ? this.state.collectionPlaces.filter( place => place.getStartTimeInt() >= this.state.startTime )
         : this.state.collectionPlaces;
     filteredPlaces = this.state.endTime.length
-        ? filteredPlaces.filter( place => place.time.replace(':','') <= this.state.endTime.replace(':','') )
+        ? filteredPlaces.filter( place => {
+          let endTime = place.getEndTimeInt();
+          if ( endTime - place.getStartTimeInt() < 0 ) {
+            endTime += 2400;
+          }
+          return endTime <= this.state.endTime
+        } )
         : filteredPlaces;
 
     return filteredPlaces;
