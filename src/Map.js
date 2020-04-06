@@ -121,7 +121,12 @@ class Map extends React.Component {
     }
 
     render() {
-        return <div className='map' ref={ this.mapRef }></div>
+        return(
+            <div>
+                <div className="map" ref={ this.mapRef }></div>
+                <div className="card"></div>
+            </div>
+        )
     }
 }
 

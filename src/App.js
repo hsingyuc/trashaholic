@@ -130,11 +130,11 @@ class App extends React.Component {
               setStartTime={ time => this.setState( { startTime: time } ) }
               setEndTime={ time => this.setState( { endTime: time } ) }
           />
-          <WasteTypes />
+          {/* <WasteTypes /> */}
           <button onClick={ () => this.setState( { isTableView: ! isTableView } ) }>
             { isTableView ? 'Map' : 'Table' }
           </button>
-          <div className='info-container'>
+          <div className="main-section">
               { isTableView
                 ? <Table 
                     collectionPlaces={ filteredPlaces.slice(0,10) }

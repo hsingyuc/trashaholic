@@ -1,7 +1,7 @@
 .map {
     overflow: auto !important;
-    width: 500px;
-    height: 350px;
+    height: 667px;
+    top:0;
 }
 
 .gm-style .gm-style-iw-c {
@@ -11,4 +11,12 @@
 
 .gm-style-iw button {
     display: none !important;
+}
+
+.card {
+    background-color: black;
+    height: 250px;
+    /* background-color: #FFFFFF; */
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);  
+    bottom: 0; 
 }
