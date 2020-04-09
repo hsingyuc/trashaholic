@@ -31,13 +31,15 @@ class Filters extends React.Component {
   }
 
   render() {
+    const { startTime } = this.props;
+    const { endTime } = this.props;
     return (
       <div className="card">
         <div className="filters">
           <div className="filter">
             <label htmlFor="start-time">
               <span className="label-text">Start</span>
-              <select id="start-time" onChange={ ( event ) => this.matchStartTime( event )} value={this.props.startTime}>
+              <select id="start-time" onChange={( event ) => this.matchStartTime( event )} value={startTime}>
                 { Filters.renderOptions( 1330, 2430 ) }
               </select>
             </label>
@@ -45,7 +47,7 @@ class Filters extends React.Component {
           <div className="filter">
             <label htmlFor="end-time">
               <span className="label-text">End</span>
-              <select id="end-time" onChange={( event ) => this.matchEndTime( event )} value={this.props.endTime}>
+              <select id="end-time" onChange={( event ) => this.matchEndTime( event )} value={endTime}>
                 { Filters.renderOptions( 1400, 2500 ) }
               </select>
             </label>

@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import Table from './Table.js';
-import Map from './Map.js';
-import WasteTypes from './WasteTypes.js';
-import Filters from './Filters.js';
-import { getGoogleMapsPromise } from './utils';
 import { FiMenu } from 'react-icons/fi';
+import Table from './Table';
+import Map from './Map';
+import WasteTypes from './WasteTypes';
+import Filters from './Filters';
+import { getGoogleMapsPromise } from './utils';
 
 class App extends React.Component {
   constructor( props ) {
@@ -28,7 +28,11 @@ class App extends React.Component {
 
   componentDidUpdate( prevProps, prevState ) {
     const { google, collectionPlaces, currentPosition } = this.state;
-    const { google: prevGoogle, collectionPlaces: prevCollectionPlaces, currentPosition: prevCurrentPosition } = prevState;
+    const {
+      google: prevGoogle,
+      collectionPlaces: prevCollectionPlaces,
+      currentPosition: prevCurrentPosition,
+    } = prevState;
 
     if (
       ( google && currentPosition && collectionPlaces.length )
@@ -38,22 +42,7 @@ class App extends React.Component {
     }
   }
 
-  addDistanceInfo() {
-    const updatedPlaces = this.state.collectionPlaces.map( ( place ) => {
-      const distance = this.state.google.maps.geometry.spherical.computeDistanceBetween(
-        new this.state.google.maps.LatLng( place.lat, place.lng ),
-        new this.state.google.maps.LatLng( this.state.currentPosition.lat, this.state.currentPosition.lng ),
-      );
-      place.distance = distance;
-      return place;
-    } );
-    const sortedPlaces = updatedPlaces.sort( ( a, b ) => a.distance - b.distance );
-    this.setState( { collectionPlaces: sortedPlaces } );
-  }
-
   setCurrentPosition() {
-    // console.log('setCurrentPosition');
-
     if ( navigator.geolocation ) {
       navigator.geolocation.getCurrentPosition( ( position ) => {
         const currentPosition = {
@@ -73,10 +62,10 @@ class App extends React.Component {
         newPlace.lat = parseFloat( place.lat );
         newPlace.lng = parseFloat( place.lng );
         newPlace.getStartTimeInt = function () {
-          return parseInt( this.startTime.replace( ':', '' ) );
+          return parseInt( this.startTime.replace( ':', '' ), 10 );
         };
         newPlace.getEndTimeInt = function () {
-          return parseInt( this.endTime.replace( ':', '' ) );
+          return parseInt( this.endTime.replace( ':', '' ), 10 );
         };
         return newPlace;
       } ) )
@@ -84,20 +73,39 @@ class App extends React.Component {
   }
 
   getFilteredPlaces() {
-    let filteredPlaces = this.state.startTime.length
-      ? this.state.collectionPlaces.filter( ( place ) => place.getStartTimeInt() >= this.state.startTime )
-      : this.state.collectionPlaces;
-    filteredPlaces = this.state.endTime.length
+    const { startTime } = this.state;
+    const { endTime } = this.state;
+    const { collectionPlaces } = this.state;
+    let filteredPlaces = startTime.length
+      ? collectionPlaces.filter( ( place ) => place.getStartTimeInt() >= startTime )
+      : collectionPlaces;
+    filteredPlaces = endTime.length
       ? filteredPlaces.filter( ( place ) => {
-        let endTime = place.getEndTimeInt();
+        let placeEndTime = place.getEndTimeInt();
         if ( endTime - place.getStartTimeInt() < 0 ) {
-          endTime += 2400;
+          placeEndTime += 2400;
         }
-        return endTime <= this.state.endTime;
+        return placeEndTime <= endTime;
       } )
       : filteredPlaces;
 
     return filteredPlaces;
+  }
+
+  addDistanceInfo() {
+    const { google, collectionPlaces, currentPosition } = this.state;
+    const updatedPlaces = collectionPlaces.map( ( place ) => {
+      const distance = google.maps.geometry.spherical.computeDistanceBetween(
+        new google.maps.LatLng( place.lat, place.lng ),
+        new google.maps.LatLng( currentPosition.lat, currentPosition.lng ),
+      );
+      return {
+        ...place,
+        distance,
+      };
+    } );
+    const sortedPlaces = updatedPlaces.sort( ( a, b ) => a.distance - b.distance );
+    this.setState( { collectionPlaces: sortedPlaces } );
   }
 
   isWithinRange() {
@@ -117,21 +125,21 @@ class App extends React.Component {
     }
 
     const filteredPlaces = this.getFilteredPlaces();
-
+    const { startTime } = this.state;
+    const { endTime } = this.state;
     return (
       <div>
-        {/* <WasteTypes /> */}
-
         <div className="main-section">
           { isTableView
             ? (
               <div className="table-wrapper">
                 <Filters
-                  startTime={ this.state.startTime }
-                  endTime={ this.state.endTime }
+                  startTime={startTime}
+                  endTime={endTime}
                   setStartTime={( time ) => this.setState( { startTime: time } )}
                   setEndTime={( time ) => this.setState( { endTime: time } )}
                 />
+                <WasteTypes />
                 <button type="button" className="button-icon" onClick={() => this.setState( { isTableView: !isTableView } )}>
                   <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
                     <path d="M19.9751 28.5V18.75" stroke="#3E4958" strokeWidth="2" strokeLinecap="round" />
@@ -154,14 +162,14 @@ class App extends React.Component {
                   { isTableView ? 'Show on a map' : <FiMenu /> }
                 </button>
                 <Table
-                  collectionPlaces={ filteredPlaces.slice( 0, 10 ) }
+                  collectionPlaces={filteredPlaces.slice( 0, 10 )}
                 />
               </div>
             )
             : (
               <Map
-                collectionPlaces={ filteredPlaces.slice( 0, 10 ) }
-                currentPosition={ currentPosition }
+                collectionPlaces={filteredPlaces.slice( 0, 10 )}
+                currentPosition={currentPosition}
               />
             )}
         </div>

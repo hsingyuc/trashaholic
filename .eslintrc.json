@@ -23,6 +23,8 @@
     ],
     "rules": {
         "space-in-parens": ["error", "always"],
-        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "func-names": ["error", "never"],
+        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
     }
 }
