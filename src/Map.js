@@ -124,7 +124,6 @@ class Map extends React.Component {
         return(
             <div>
                 <div className="map" ref={ this.mapRef }></div>
-                <div className="card"></div>
             </div>
         )
     }

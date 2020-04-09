@@ -1,14 +1,49 @@
-.filters {
-    text-align: center;
-    margin-top: 45px;
-  }
-  
-.filters input {
-  text-align: center;
-  font-size: 20px;
-  margin: 18px;
-  padding: 10px 0px 10px 0px;
-  border-width: 0;
-  border-radius: 5px;
-  width: 100px;
+.card {
+  background-color: white;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.14);
+  border-radius: 15px;  
+  margin-bottom: 25px;
+}
+
+.filters label {
+  font-weight: 500;
+  font-size: 15px;
+  color:#97ADB6;
+}
+
+.label-text {
+  margin-right: 15px;
+  display: inline-block;
+  width: 40px;
+}
+
+.filters .filter:after {
+  content: '';
+  height: 1px;
+  width: calc( 100% - 60px );
+  background: #D5DDE0;
+  display: block;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.filters .filter:last-child:after {
+  display: none;
+}
+
+.filter {
+  position: relative;
+  padding: 16px 15px;
+}
+
+.start-time-wrapper {
+  display: inline-block;
+  border-bottom: 1px solid #D5DDE0;
+}
+
+#start-time, #end-time {
+  font-size: 15px;
+  border: none;
+  background-color: rgba(139, 170, 200, 0.07);
 }

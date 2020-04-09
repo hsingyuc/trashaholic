@@ -1,41 +1,66 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './Filters.css';
 
 class Filters extends React.Component {
-    matchStartTime( event ) {
-        const startTime = event.target.value;
-        this.props.setStartTime( startTime );
+  matchStartTime( event ) {
+    const { setStartTime } = this.props;
+    const startTime = event.target.value;
+    setStartTime( startTime );
+  }
+
+  matchEndTime( event ) {
+    const { setEndTime } = this.props;
+    const endTime = event.target.value;
+    setEndTime( endTime );
+  }
+
+  static renderOptions( startTime, endTime ) {
+    const options = [<option key="0" value="" disabled>Select time</option>];
+    for ( let i = startTime; i <= endTime; ) {
+      let time = i;
+      if ( time >= 2400 ) {
+        time = ( time - 2400 ).toString();
+        while ( time.length < 4 ) time = `0${time}`;
+      }
+      time = time.toString();
+      options.push( <option key={i} value={i}>{ `${time.slice( 0, 2 )}:${time.slice( 2 )}` }</option> );
+      i += i % 100 === 0 ? 30 : 70;
     }
+    return options;
+  }
 
-    matchEndTime( event ) {
-        const endTime = event.target.value;
-        this.props.setEndTime( endTime );
-    }
-
-    render() {
-        return(
-            <div className='filters'>
-                <label htmlFor="start-time"></label>
-                <select id="start-time" onChange={ event => this.matchStartTime( event ) } value={ this.props.startTime }>
-                    <option value="Start time">Start time</option>
-                    <option value="1700">17:00</option>
-                    <option value="1730">17:30</option>
-                    <option value="1800">18:00</option>
-                    <option value="1830">18:30</option>
-                </select>
-                <label htmlFor="end-time"></label>
-                <select id="end-time" onChange={ event => this.matchEndTime( event ) } value={ this.props.endTime }>
-                    <option value="End time">End time</option>
-                    <option value="1730">17:30</option>
-                    <option value="1800">18:00</option>
-                    <option value="1830">18:30</option>
-                    <option value="1900">19:00</option>
-                </select>
-            </div>
-
-
-        );
-    }
+  render() {
+    return (
+      <div className="card">
+        <div className="filters">
+          <div className="filter">
+            <label htmlFor="start-time">
+              <span className="label-text">Start</span>
+              <select id="start-time" onChange={ ( event ) => this.matchStartTime( event )} value={this.props.startTime}>
+                { Filters.renderOptions( 1330, 2430 ) }
+              </select>
+            </label>
+          </div>
+          <div className="filter">
+            <label htmlFor="end-time">
+              <span className="label-text">End</span>
+              <select id="end-time" onChange={( event ) => this.matchEndTime( event )} value={this.props.endTime}>
+                { Filters.renderOptions( 1400, 2500 ) }
+              </select>
+            </label>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
+
+Filters.propTypes = {
+  setStartTime: PropTypes.func.isRequired,
+  setEndTime: PropTypes.func.isRequired,
+  startTime: PropTypes.string.isRequired,
+  endTime: PropTypes.string.isRequired,
+};
 
 export default Filters;
