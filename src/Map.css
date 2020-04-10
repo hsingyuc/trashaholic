@@ -1,0 +1,13 @@
+.map {
+    overflow: auto !important;
+    height: 667px;
+}
+
+.gm-style .gm-style-iw-c {
+    border-radius: 0px !important;
+    color: black;
+}
+
+.gm-style-iw button {
+    display: none !important;
+}

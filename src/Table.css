@@ -1,0 +1,42 @@
+.table-wrapper {
+  margin: 0 21px;
+  padding-top: 20px;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+}
+
+.row {
+  margin-bottom: 10px;
+  display: flex;
+}
+
+.info-wrapper {
+  display: inline-block;
+  margin-left: 12px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #D5DDE0;
+  width: 100%;
+}
+
+.address {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  color: #3E4958;
+  padding-right: 45px;
+}
+
+.time-distance {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  color: #97ADB6;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
