@@ -1,3 +1,8 @@
+.table-wrapper {
+  margin: 0 21px;
+  padding-top: 20px;
+}
+
 .list {
   list-style: none;
   padding: 0;

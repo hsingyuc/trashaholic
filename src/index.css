@@ -19,16 +19,16 @@ code {
   max-width: 375px;
 }
 
-.table-wrapper {
-  margin: 0 21px;
-}
-
 .button-icon {
   color: #1152FD;
   font-size: 15px;
   display: flex;
   align-items: center;
   border: white;
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .button-icon svg {
