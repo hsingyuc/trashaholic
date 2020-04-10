@@ -12,8 +12,7 @@ export const getGoogleMapsPromise = function () {
 
       // Load the Google Maps API
       const script = document.createElement( 'script' );
-      const API = 'AIzaSyDfgM-gH4reFsyeZYzoecfGvoXg2aXro9s';
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${API}&callback=resolveGoogleMapsPromise&language=en&libraries=geometry`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&callback=resolveGoogleMapsPromise&language=en&libraries=geometry`;
       script.async = true;
       document.body.appendChild( script );
     } );

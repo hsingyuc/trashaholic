@@ -45,7 +45,7 @@ class Map extends React.Component {
 
     this.map = new this.google.maps.Map(
       this.mapRef.current, // current is the DOM element for the reference.
-      // { zoom: 0 }
+      { fullscreenControl: false },
     );
 
     this.renderInfoWindows();

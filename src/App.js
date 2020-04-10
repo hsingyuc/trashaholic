@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import { FiMenu } from 'react-icons/fi';
 import Table from './Table';
 import Map from './Map';
 import WasteTypes from './WasteTypes';
@@ -133,26 +132,21 @@ class App extends React.Component {
           <button type="button" className="button-icon" onClick={() => this.setState( { isTableView: !isTableView } )}>
             { isTableView
               ? (
-                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                  <path d="M19.9751 28.5V18.75" stroke="#3E4958" strokeWidth="2" strokeLinecap="round" />
-                  <g filter="url(#filter0_d)">
-                    <path fillRule="evenodd" clipRule="evenodd" d="M19.9751 20.9165C22.6675 20.9165 24.8501 18.7339 24.8501 16.0415C24.8501 13.3491 22.6675 11.1665 19.9751 11.1665C17.2827 11.1665 15.1001 13.3491 15.1001 16.0415C15.1001 18.7339 17.2827 20.9165 19.9751 20.9165Z" fill="#1152FD" />
+                <svg id="Capa_1" enableBackground="new 0 0 512 512" height="25px" viewBox="0 0 512 512" width="25px">
+                  <g>
+                    <path d="m307.79 223.476-53.135 78.467-78.573 78.18c-29.222-37.139-61.132-73.116-80.587-116.631l42.352-64.879 64.957-62.668c-21.71 26.831-20.089 66.293 4.864 91.246 26.696 26.696 69.968 26.696 96.663 0 1.203-1.203 2.365-2.446 3.459-3.715z" fill="#ecb72b" />
+                    <path d="m309.02 222.003c21.9-26.844 20.346-66.442-4.688-91.462-26.696-26.696-69.968-26.696-96.663 0-1.121 1.121-2.189 2.27-3.215 3.445l44.811-72.847 60.795-52.809c45.407 14.374 82.964 46.379 104.648 87.977l-44.352 71.516z" fill="#5085f7" />
+                    <path d="m202.802 135.949-107.312 127.549c-10.643-23.783-17.562-49.817-18.276-79.529-.054-1.689-.081-3.391-.081-5.093 0-43.718 15.685-83.789 41.746-114.861z" fill="#da2f2a" />
+                    <path d="m202.802 135.949-83.926-71.939c32.816-39.125 82.06-64.01 137.126-64.01 18.845 0 37.009 2.916 54.065 8.32z" fill="#4274eb" />
+                    <path d="m434.867 178.865c0-29.779-7.278-57.859-20.151-82.558l-238.64 283.826c27.113 34.488 51.887 69.985 62.183 113.454.33 1.392.685 3.019 1.063 4.848 3.733 18.086 29.63 18.086 33.363 0 .378-1.829.733-3.456 1.063-4.848 27.448-115.892 157.807-175.118 161.043-309.618.046-1.696.076-3.397.076-5.104z" fill="#60a850" />
                   </g>
-                  <ellipse cx="18.3502" cy="14.4168" rx="1.08333" ry="1.08333" fill="white" />
-                  <defs>
-                    <filter id="filter0_d" x="0.100098" y="0.166504" width="39.75" height="39.75" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
-                      <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
-                      <feOffset dy="4" />
-                      <feGaussianBlur stdDeviation="7.5" />
-                      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
-                      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
-                      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
-                    </filter>
-                  </defs>
                 </svg>
               )
-              : <FiMenu /> }
+              : (
+                <svg width="24" height="20" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fillRule="evenodd" clipRule="evenodd" d="M18 2H0V0H18V2ZM0 11H24V9H0V11ZM0 20H12V18H0V20Z" fill="#43496A" />
+                </svg>
+              ) }
           </button>
           { isTableView
             ? (
