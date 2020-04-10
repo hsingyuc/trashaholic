@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Map.css';
 import { getGoogleMapsPromise } from './utils';
+import Card from './Card';
 
 class Map extends React.Component {
   static arraysEqual( a, b ) {
@@ -61,7 +62,6 @@ class Map extends React.Component {
           },
         },
       );
-      // this.map.setCenter(this.props.currentPosition);
     } else {
       this.handleLocationError( false, this.map.getCenter() );
     }
@@ -110,14 +110,17 @@ class Map extends React.Component {
     this.deleteInfoWindows();
 
     // The infoWindows, positioned at EACH latLongs
-    const { collectionPlaces } = this.props;
+    const { collectionPlaces, setSelectedPlace } = this.props;
     const infoWindows = collectionPlaces.map( ( place ) => {
       const { lat, lng } = place;
-      const infoWindow = new this.google.maps.InfoWindow( {
+      const infoWindow = new this.google.maps.Marker( {
         position: { lat, lng },
-        content: place.startTime,
+        map: this.map,
       } );
-      infoWindow.open( this.map );
+
+      infoWindow.addListener( 'click', () => {
+        setSelectedPlace( place );
+      } );
 
       return infoWindow;
     } );
@@ -137,6 +140,7 @@ class Map extends React.Component {
 Map.propTypes = {
   collectionPlaces: PropTypes.arrayOf( PropTypes.object ).isRequired,
   currentPosition: PropTypes.objectOf( PropTypes.number ).isRequired,
+  setSelectedPlace: PropTypes.func.isRequired,
 };
 
 export default Map;
