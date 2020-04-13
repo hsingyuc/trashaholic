@@ -144,7 +144,7 @@ class App extends React.Component {
                 </svg>
               )
               : (
-                <svg width="24" height="20" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="24" height="20" viewBox="0 0 24 20" fill="none">
                   <path fillRule="evenodd" clipRule="evenodd" d="M18 2H0V0H18V2ZM0 11H24V9H0V11ZM0 20H12V18H0V20Z" fill="#43496A" />
                 </svg>
               ) }

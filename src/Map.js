@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './Map.css';
+import { TiLocation } from 'react-icons/ti';
 import { getGoogleMapsPromise } from './utils';
-import Card from './Card';
 
 class Map extends React.Component {
   static arraysEqual( a, b ) {
@@ -21,7 +21,7 @@ class Map extends React.Component {
     this.initMap = this.initMap.bind( this );
     this.mapRef = React.createRef();
     this.state = {
-      infoWindows: [],
+      markers: [],
     };
   }
 
@@ -35,7 +35,7 @@ class Map extends React.Component {
     const oldLineIds = prevProps.collectionPlaces.map( ( place ) => place.lineid );
 
     if ( !Map.arraysEqual( newLineIds, oldLineIds ) ) {
-      this.renderInfoWindows();
+      this.rendermarkers();
     }
 
     this.fitMap();
@@ -49,16 +49,19 @@ class Map extends React.Component {
       { fullscreenControl: false },
     );
 
-    this.renderInfoWindows();
+    this.rendermarkers();
 
     const { currentPosition } = this.props;
+    const image = `${process.env.PUBLIC_URL}/ic_cloc.png`;
     if ( currentPosition ) {
       const marker = new this.google.maps.Marker(
         {
           position: currentPosition,
           map: this.map,
           icon: {
-            url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+            url: image,
+            size: new this.google.maps.Size( 56, 56 ),
+            scaledSize: new this.google.maps.Size( 56, 56 ),
           },
         },
       );
@@ -68,22 +71,22 @@ class Map extends React.Component {
   }
 
   handleLocationError( browserHasGeolocation, pos ) {
-    const infoWindow = new this.google.maps.InfoWindow();
-    infoWindow.setPosition( pos );
-    infoWindow.setContent( browserHasGeolocation
+    const marker = new this.google.maps.Marker();
+    marker.setPosition( pos );
+    marker.setContent( browserHasGeolocation
       ? 'Error: The Geolocation service failed.'
       : 'Error: Your browser doesn\'t support geolocation.' );
-    infoWindow.open( this.map );
+    marker.open( this.map );
   }
 
-  deleteInfoWindows() {
-    const { infoWindows } = this.state;
-    infoWindows.forEach( ( infoWindow ) => infoWindow.setMap( null ) );
+  deletemarkers() {
+    const { markers } = this.state;
+    markers.forEach( ( marker ) => marker.setMap( null ) );
   }
 
   fitMap() {
     const bounds = new this.google.maps.LatLngBounds();
-    const { infoWindows } = this.state;
+    const { markers } = this.state;
     const { currentPosition } = this.props;
 
     if ( currentPosition ) {
@@ -93,39 +96,45 @@ class Map extends React.Component {
       bounds.extend( currentPositiongLatLng );
     }
 
-    for ( let i = 0; i < infoWindows.length && i < 5; i++ ) {
-      bounds.extend( infoWindows[i].getPosition() );
+    for ( let i = 0; i < markers.length && i < 5; i++ ) {
+      bounds.extend( markers[i].getPosition() );
     }
 
     this.map.fitBounds( bounds );
     this.map.panToBounds( bounds );
   }
 
-  renderInfoWindows() {
+  rendermarkers() {
     if ( !this.google ) {
       return;
     }
 
-    // Delete old infoWindows before rendering new ones.
-    this.deleteInfoWindows();
+    // Delete old markers before rendering new ones.
+    this.deletemarkers();
 
-    // The infoWindows, positioned at EACH latLongs
+    // The markers, positioned at EACH latLongs
     const { collectionPlaces, setSelectedPlace } = this.props;
-    const infoWindows = collectionPlaces.map( ( place ) => {
+    const image = `${process.env.PUBLIC_URL}/ic_loc.png`;
+    const markers = collectionPlaces.map( ( place ) => {
       const { lat, lng } = place;
-      const infoWindow = new this.google.maps.Marker( {
+      const marker = new this.google.maps.Marker( {
         position: { lat, lng },
         map: this.map,
+        icon: {
+          url: image,
+          size: new this.google.maps.Size( 56, 56 ),
+          scaledSize: new this.google.maps.Size( 56, 56 ),
+        },
       } );
 
-      infoWindow.addListener( 'click', () => {
+      marker.addListener( 'click', () => {
         setSelectedPlace( place );
       } );
 
-      return infoWindow;
+      return marker;
     } );
 
-    this.setState( { infoWindows } );
+    this.setState( { markers } );
   }
 
   render() {
