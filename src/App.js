@@ -5,6 +5,7 @@ import Map from './Map';
 import WasteTypes from './WasteTypes';
 import Filters from './Filters';
 import { getGoogleMapsPromise } from './utils';
+import Card from './Card';
 
 class App extends React.Component {
   constructor( props ) {
@@ -16,6 +17,7 @@ class App extends React.Component {
       endTime: '',
       isTableView: true,
       google: null,
+      selectedPlace: null,
     };
   }
 
@@ -124,8 +126,7 @@ class App extends React.Component {
     }
 
     const filteredPlaces = this.getFilteredPlaces();
-    const { startTime } = this.state;
-    const { endTime } = this.state;
+    const { startTime, endTime, selectedPlace } = this.state;
     return (
       <div>
         <div className="main-section">
@@ -164,11 +165,21 @@ class App extends React.Component {
               </div>
             )
             : (
-              <Map
-                collectionPlaces={filteredPlaces.slice( 0, 10 )}
-                currentPosition={currentPosition}
-              />
-            )}
+              <div>
+                <Map
+                  collectionPlaces={filteredPlaces.slice( 0, 10 )}
+                  currentPosition={currentPosition}
+                  setSelectedPlace={( place ) => this.setState( { selectedPlace: place } )}
+                />
+                {/* if we have selectedPlace then render card  */}
+                {selectedPlace
+                  && (
+                  <Card
+                    place={selectedPlace}
+                  />
+                  )}
+              </div>
+            ) }
         </div>
       </div>
     );
