@@ -15,7 +15,12 @@ class Card extends React.PureComponent {
 }
 
 Card.propTypes = {
-  place: PropTypes.objectOf( PropTypes.object ).isRequired,
+  place: PropTypes.shape( {
+    id: PropTypes.string,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    distance: PropTypes.number,
+  } ).isRequired,
 };
 
 export default Card;

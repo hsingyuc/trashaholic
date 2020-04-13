@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './Place.css';
 
 class Place extends React.Component {
   static getFormattedDistance( distance ) {
@@ -38,7 +39,12 @@ class Place extends React.Component {
 }
 
 Place.propTypes = {
-  data: PropTypes.arrayOf( PropTypes.object ).isRequired,
+  data: PropTypes.shape( {
+    id: PropTypes.string,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    distance: PropTypes.number,
+  } ).isRequired,
 };
 
 export default Place;
