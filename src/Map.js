@@ -247,6 +247,10 @@ class Map extends React.Component {
   }
 
   fitMap() {
+    if ( !this.google ) {
+      return;
+    }
+
     const bounds = new this.google.maps.LatLngBounds();
     const { markers } = this.state;
     const { currentPosition } = this.props;

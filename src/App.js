@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Table from './Table';
+import Place from './Place';
 import Map from './Map';
 import WasteTypes from './WasteTypes';
 import Filters from './Filters';

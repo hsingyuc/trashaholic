@@ -17,6 +17,7 @@ code {
 .main-section {
   margin: 0 auto;
   max-width: 375px;
+  position: relative;
 }
 
 .button-icon {

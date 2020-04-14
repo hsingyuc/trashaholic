@@ -1,0 +1,11 @@
+.place {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+}
+
+.info-wrapper {
+    display: inline-block;
+    margin-left: 12px;
+    width: 100%;
+}
