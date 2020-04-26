@@ -3,6 +3,8 @@
 
 An app to get the closest trash collect truck location based on your current location that can be filtered by time.
 
+## Live demo
+https://trashaholic.herokuapp.com/
 
 ## Prerequisites
 
