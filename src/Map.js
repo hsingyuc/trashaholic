@@ -16,6 +16,10 @@ class Map extends React.Component {
     return true;
   }
 
+  static handleLocationError() {
+    alert( 'Error: The Geolocation service failed.' );
+  }
+
   constructor( props ) {
     super( props );
     this.initMap = this.initMap.bind( this );
@@ -228,17 +232,8 @@ class Map extends React.Component {
         },
       );
     } else {
-      this.handleLocationError( false, this.map.getCenter() );
+      Map.handleLocationError();
     }
-  }
-
-  handleLocationError( browserHasGeolocation, pos ) {
-    const marker = new this.google.maps.Marker();
-    marker.setPosition( pos );
-    marker.setContent( browserHasGeolocation
-      ? 'Error: The Geolocation service failed.'
-      : 'Error: Your browser doesn\'t support geolocation.' );
-    marker.open( this.map );
   }
 
   deletemarkers() {
