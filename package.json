@@ -12,6 +12,9 @@
     "react-icons": "^3.9.0",
     "react-scripts": "3.4.0"
   },
+  "engines": {
+    "node": "13.2.0"
+  },
   "scripts": {
     "format": "node ./bin/formatCollectionsFile.js",
     "start": "react-scripts start",
