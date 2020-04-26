@@ -52,6 +52,7 @@ class Map extends React.Component {
     this.map = new this.google.maps.Map(
       this.mapRef.current, // current is the DOM element for the reference.
       {
+        zoomControl: false,
         fullscreenControl: false,
         styles: [
           {
@@ -288,8 +289,8 @@ class Map extends React.Component {
         map: this.map,
         icon: {
           url: image,
-          size: new this.google.maps.Size( 56, 56 ),
-          scaledSize: new this.google.maps.Size( 56, 56 ),
+          size: new this.google.maps.Size( 20, 26 ),
+          scaledSize: new this.google.maps.Size( 20, 26 ),
         },
       } );
 

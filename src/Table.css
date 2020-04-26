@@ -19,26 +19,6 @@
   padding-bottom: 10px;
 }
 
-.address {
-  font-family: Inter;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 15px;
-  color: #3E4958;
-  padding-right: 45px;
-}
-
-.time-distance {
-  font-family: Inter;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 13px;
-  color: #97ADB6;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
 @media (max-width: 767px) {
   .is-map-view .table-wrapper {
       display: none;
