@@ -5,6 +5,7 @@ import Map from './Map';
 import WasteTypes from './WasteTypes';
 import Filters from './Filters';
 import { getGoogleMapsPromise } from './utils';
+import Loader from './Loader';
 
 class App extends React.Component {
   constructor( props ) {
@@ -122,7 +123,7 @@ class App extends React.Component {
   render() {
     const { collectionPlaces, currentPosition, isTableView } = this.state;
     if ( !collectionPlaces.length ) {
-      return <div>Loading...</div>;
+      return <Loader />;
     }
 
     const filteredPlaces = this.getFilteredPlaces();
@@ -149,7 +150,7 @@ class App extends React.Component {
               )
               : (
                 <svg width="24" height="20" viewBox="0 0 24 20" fill="none">
-                  <path fillRule="evenodd" clipRule="evenodd" d="M18 2H0V0H18V2ZM0 11H24V9H0V11ZM0 20H12V18H0V20Z" fill="#CE8467" />
+                  <path fillRule="evenodd" clipRule="evenodd" d="M18 2H0V0H18V2ZM0 11H24V9H0V11ZM0 20H12V18H0V20Z" fill="#293345" />
                 </svg>
               )}
           </button>
