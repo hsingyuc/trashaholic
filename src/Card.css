@@ -9,3 +9,15 @@
     left: 45%;
     transform: translate(-50%);
 }
+
+@media (max-width: 767px) {
+    .card-wrapper {
+        padding: 12px 10px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        width: 100%;
+        left: 0;
+        margin: 0;
+        transform: none;
+    }
+}
