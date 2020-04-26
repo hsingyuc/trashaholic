@@ -57,7 +57,7 @@ class App extends React.Component {
   }
 
   getCollectionData() {
-    fetch( 'http://localhost:3000/formatted_places.json' )
+    fetch( `${process.env.PUBLIC_URL}/formatted_places.json` )
       .then( ( response ) => response.json() )
       .then( ( collectionPlaces ) => collectionPlaces.map( ( place ) => {
         const newPlace = place;
