@@ -16,10 +16,6 @@ class Map extends React.Component {
     return true;
   }
 
-  static handleLocationError() {
-    alert( 'Error: The Geolocation service failed.' );
-  }
-
   constructor( props ) {
     super( props );
     this.initMap = this.initMap.bind( this );
@@ -35,12 +31,16 @@ class Map extends React.Component {
   }
 
   componentDidUpdate( prevProps ) {
-    const { collectionPlaces } = this.props;
+    const { collectionPlaces, currentPosition } = this.props;
     const newLineIds = collectionPlaces.map( ( place ) => place.lineid );
     const oldLineIds = prevProps.collectionPlaces.map( ( place ) => place.lineid );
 
     if ( !Map.arraysEqual( newLineIds, oldLineIds ) ) {
-      this.rendermarkers();
+      this.renderMarkers();
+    }
+
+    if ( currentPosition !== prevProps.currentPosition ) {
+      this.renderCurrentPosition();
     }
 
     this.fitMap();
@@ -216,24 +216,8 @@ class Map extends React.Component {
       },
     );
 
-    this.rendermarkers();
-    const { currentPosition } = this.props;
-    const image = `${process.env.PUBLIC_URL}/ic_cloc.png`;
-    if ( currentPosition ) {
-      const marker = new this.google.maps.Marker(
-        {
-          position: currentPosition,
-          map: this.map,
-          icon: {
-            url: image,
-            size: new this.google.maps.Size( 56, 56 ),
-            scaledSize: new this.google.maps.Size( 56, 56 ),
-          },
-        },
-      );
-    } else {
-      Map.handleLocationError();
-    }
+    this.renderMarkers();
+    this.renderCurrentPosition();
   }
 
   deletemarkers() {
@@ -265,7 +249,28 @@ class Map extends React.Component {
     this.map.panToBounds( bounds );
   }
 
-  rendermarkers() {
+  renderCurrentPosition() {
+    const { currentPosition } = this.props;
+
+    if ( !currentPosition ) {
+      return;
+    }
+
+    const image = `${process.env.PUBLIC_URL}/ic_cloc.png`;
+    const marker = new this.google.maps.Marker(
+      {
+        position: currentPosition,
+        map: this.map,
+        icon: {
+          url: image,
+          size: new this.google.maps.Size( 56, 56 ),
+          scaledSize: new this.google.maps.Size( 56, 56 ),
+        },
+      },
+    );
+  }
+
+  renderMarkers() {
     if ( !this.google ) {
       return;
     }
@@ -315,9 +320,13 @@ class Map extends React.Component {
   }
 }
 
+Map.defaultProps = {
+  currentPosition: null,
+};
+
 Map.propTypes = {
   collectionPlaces: PropTypes.arrayOf( PropTypes.object ).isRequired,
-  currentPosition: PropTypes.objectOf( PropTypes.number ).isRequired,
+  currentPosition: PropTypes.objectOf( PropTypes.number ),
 };
 
 export default Map;

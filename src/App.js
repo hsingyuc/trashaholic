@@ -49,6 +49,8 @@ class App extends React.Component {
           lng: position.coords.longitude,
         };
         this.setState( { currentPosition } );
+      }, () => {
+        alert( 'Error: The Geolocation service failed.' );
       } );
     }
   }
