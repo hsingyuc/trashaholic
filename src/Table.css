@@ -1,11 +1,17 @@
 .table-wrapper {
-  margin: 0 21px;
-  padding-top: 20px;
+  padding: 20px;
+  overflow: scroll;
+  height: 100vh;
+  width: 40%;
 }
 
 .list {
   list-style: none;
   padding: 0;
+}
+
+.is-rest-day .list {
+  opacity: .5;
 }
 
 .list .info-wrapper {
@@ -31,4 +37,14 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+@media (max-width: 767px) {
+  .is-map-view .table-wrapper {
+      display: none;
+  }
+
+  .table-wrapper {
+    width: 100%;
+  }
 }

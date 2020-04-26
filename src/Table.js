@@ -6,7 +6,6 @@ import Place from './Place';
 class Table extends React.PureComponent {
   render() {
     const { collectionPlaces } = this.props;
-
     return (
       <div>
         <ul className="list">

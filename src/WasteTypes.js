@@ -30,7 +30,7 @@ class WasteTypes extends React.PureComponent {
           </div>
         );
       default:
-        return <p className="react-icon">Not today!!!</p>;
+        return <p className="react-icon">No trash today!!!</p>;
     }
   }
 }

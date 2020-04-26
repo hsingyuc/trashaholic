@@ -1,12 +1,10 @@
 import React from 'react';
 import './App.css';
 import Table from './Table';
-import Place from './Place';
 import Map from './Map';
 import WasteTypes from './WasteTypes';
 import Filters from './Filters';
 import { getGoogleMapsPromise } from './utils';
-import Card from './Card';
 
 class App extends React.Component {
   constructor( props ) {
@@ -18,7 +16,6 @@ class App extends React.Component {
       endTime: '',
       isTableView: true,
       google: null,
-      selectedPlace: null,
     };
   }
 
@@ -127,10 +124,14 @@ class App extends React.Component {
     }
 
     const filteredPlaces = this.getFilteredPlaces();
-    const { startTime, endTime, selectedPlace } = this.state;
+    const { startTime, endTime } = this.state;
+    const viewClass = isTableView ? 'is-table-view' : 'is-map-view';
+    const d = new Date();
+    const restDayClass = [0, 3].includes( d.getDay() ) ? 'is-rest-day' : 'is-active-day';
+
     return (
       <div>
-        <div className="main-section">
+        <div className={`main-section ${viewClass} ${restDayClass}`}>
           <button type="button" className="button-icon" onClick={() => this.setState( { isTableView: !isTableView } )}>
             { isTableView
               ? (
@@ -148,39 +149,24 @@ class App extends React.Component {
                 <svg width="24" height="20" viewBox="0 0 24 20" fill="none">
                   <path fillRule="evenodd" clipRule="evenodd" d="M18 2H0V0H18V2ZM0 11H24V9H0V11ZM0 20H12V18H0V20Z" fill="#CE8467" />
                 </svg>
-              ) }
+              )}
           </button>
-          { isTableView
-            ? (
-              <div className="table-wrapper">
-                <Filters
-                  startTime={startTime}
-                  endTime={endTime}
-                  setStartTime={( time ) => this.setState( { startTime: time } )}
-                  setEndTime={( time ) => this.setState( { endTime: time } )}
-                />
-                <WasteTypes />
-                <Table
-                  collectionPlaces={filteredPlaces.slice( 0, 10 )}
-                />
-              </div>
-            )
-            : (
-              <div>
-                <Map
-                  collectionPlaces={filteredPlaces.slice( 0, 10 )}
-                  currentPosition={currentPosition}
-                  setSelectedPlace={( place ) => this.setState( { selectedPlace: place } )}
-                />
-                {/* if we have selectedPlace then render card  */}
-                {selectedPlace
-                  && (
-                  <Card
-                    place={selectedPlace}
-                  />
-                  )}
-              </div>
-            ) }
+          <div className="table-wrapper">
+            <Filters
+              startTime={startTime}
+              endTime={endTime}
+              setStartTime={( time ) => this.setState( { startTime: time } )}
+              setEndTime={( time ) => this.setState( { endTime: time } )}
+            />
+            <WasteTypes />
+            <Table
+              collectionPlaces={filteredPlaces.slice( 0, 10 )}
+            />
+          </div>
+          <Map
+            collectionPlaces={filteredPlaces.slice( 0, 10 )}
+            currentPosition={currentPosition}
+          />
         </div>
       </div>
     );

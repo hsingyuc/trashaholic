@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './Map.css';
-import { TiLocation } from 'react-icons/ti';
+import Card from './Card';
 import { getGoogleMapsPromise } from './utils';
 
 class Map extends React.Component {
@@ -22,6 +22,7 @@ class Map extends React.Component {
     this.mapRef = React.createRef();
     this.state = {
       markers: [],
+      selectedPlace: null,
     };
   }
 
@@ -212,7 +213,6 @@ class Map extends React.Component {
     );
 
     this.rendermarkers();
-
     const { currentPosition } = this.props;
     const image = `${process.env.PUBLIC_URL}/ic_cloc.png`;
     if ( currentPosition ) {
@@ -279,7 +279,7 @@ class Map extends React.Component {
     this.deletemarkers();
 
     // The markers, positioned at EACH latLongs
-    const { collectionPlaces, setSelectedPlace } = this.props;
+    const { collectionPlaces } = this.props;
     const image = `${process.env.PUBLIC_URL}/ic_loc.png`;
     const markers = collectionPlaces.map( ( place ) => {
       const { lat, lng } = place;
@@ -294,7 +294,7 @@ class Map extends React.Component {
       } );
 
       marker.addListener( 'click', () => {
-        setSelectedPlace( place );
+        this.setState( { selectedPlace: place } );
       } );
 
       return marker;
@@ -304,9 +304,17 @@ class Map extends React.Component {
   }
 
   render() {
+    const { selectedPlace } = this.state;
     return (
-      <div>
+      <div className="map-wrapper">
         <div className="map" ref={this.mapRef} />
+        {/* if we have selectedPlace then render card  */}
+        {selectedPlace
+              && (
+              <Card
+                place={selectedPlace}
+              />
+              )}
       </div>
     );
   }
@@ -315,7 +323,6 @@ class Map extends React.Component {
 Map.propTypes = {
   collectionPlaces: PropTypes.arrayOf( PropTypes.object ).isRequired,
   currentPosition: PropTypes.objectOf( PropTypes.number ).isRequired,
-  setSelectedPlace: PropTypes.func.isRequired,
 };
 
 export default Map;

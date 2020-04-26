@@ -33,6 +33,7 @@ class Filters extends React.Component {
   render() {
     const { startTime } = this.props;
     const { endTime } = this.props;
+
     return (
       <div className="card">
         <div className="filters">
